@@ -1,0 +1,15 @@
+*{
+ margin: 0px;
+ padding: 0px;
+}
+header{
+ padding: 20px;
+ background: grey;
+}
+header h1{
+ margin-left: 100px;
+}
+
+form{
+ display: inline;
+}
