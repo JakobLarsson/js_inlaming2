@@ -18,15 +18,17 @@
 </header>
 <nav>
  <div class="row">
-<div class="col-2 offset-5">
+  <!-- SearchBox and Button -->
+<div class="col-3 offset-5 searchDiv">
   <h5>Search for a city</h5>
-  <form class="d-flex">
-      <input id="searchBox" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success" type="submit">Search</button>
-    </form>
+  <input type="text" name="" id="inputText">
+  <button id="buttonSearch" type="submit">Search</button>
+      
+    
  </div>
- <div class="col">
-  <form id="checkBox" action="">
+ <!-- CheckBoxes -->
+ <div class="col checkBoxesDiv">
+  
    <input type="checkbox" id="onlyWeather"> 
    <label for="onlyWeather">Only weather </label>
    <br>
@@ -36,10 +38,8 @@
    <input type="checkbox" id="sortByAlphabetic"> 
    <label for="sortByAlphabetic">Sort by alphabetic order</label>
    <br>
-  </form>
  <div class="col"></div>
  </div>
- 
 </nav>
 
 
