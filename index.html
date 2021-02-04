@@ -10,18 +10,20 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>
- <h1>
-  CityTraveler
-  <i class="fas fa-plane"></i>
- </h1>
-</header>
 <nav>
- <div class="row">
+ <div class="container-fluid">
+  <div class="row titleDiv">
+   <h1>
+    CityTraveler
+    <i class="fas fa-plane"></i>
+   </h1>
+  </div>
   <!-- SearchBox and Button -->
-<div class="col-3 offset-5 searchDiv">
-  <h5>Search for a city</h5>
-  <input type="text" name="" id="inputText">
+ <div class="row selectorDiv align-items-center">
+
+<div class="col-3 offset-4 searchDiv">
+  
+  <input type="text" name="" placeholder="Search for a city" id="inputText">
   <button id="buttonSearch" type="submit">Search</button>
       
     
@@ -38,9 +40,16 @@
    <input type="checkbox" id="sortByAlphabetic"> 
    <label for="sortByAlphabetic">Sort by alphabetic order</label>
    <br>
- <div class="col"></div>
+ 
  </div>
+ </div>
+
 </nav>
+<main>
+ <div class="container">
+  
+ </div>
+</main>
 
 
  <!-- JavaScript Bundle with Popper -->

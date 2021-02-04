@@ -2,31 +2,41 @@
  margin: 0px;
  padding: 0px;
 }
+nav{
+ background-image: url(/img/banner2.jpeg);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  background-position-y: -300px;
+  z-index: -1;
+}
 /* HEAD */
-header{
- padding: 20px;
- background: grey;
+.titleDiv{
+ 
+ padding-top: 40px;
+ padding-bottom: 20px;
+ border-bottom: 1px solid black;
 }
-header h1{
- margin-left: 100px;
+.titleDiv h1{
+ margin-left: 20px;
 }
 
+.selectorDiv{
+ 
+ padding-top: 40px;
+ padding-bottom: 20px;
+ border-bottom: 1px solid black;
+}
 /* NAV */
-.searchDiv{
 
-}
 .searchDiv input{
+ background: white;
   font-size: 1.5rem;
-  border-radius: 10px;
+  border-radius: 5px;
   padding-left: 10px;
   
 }
-.searchDiv input:focus{
-  
-  outline: 0;
-  -webkit-box-shadow: 5px 5px 15px -2px #000000; 
-box-shadow: 5px 5px 15px -2px #000000;
-}
+
 .searchDiv button{
  border: 1px black solid;
  border-radius: 10px;
@@ -37,18 +47,15 @@ box-shadow: 5px 5px 15px -2px #000000;
  background:linear-gradient(to bottom, #768d87 5%, #6c7c7c 100%);
 	background-color:#768d87;
 
-   
-
 }
 
 .searchDiv button:hover{
  background:linear-gradient(to bottom, #6c7c7c 5%, #768d87 100%);
  background-color:#6c7c7c;
- -webkit-box-shadow: 5px 5px 15px -2px #000000; 
-box-shadow: 5px 5px 15px -2px #000000;
+
 }
 
 .checkBoxesDiv{
- font-size: 1.2rem;
- 
+ font-size: 1.5rem;
+ color: white;
 }
