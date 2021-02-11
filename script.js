@@ -1,12 +1,24 @@
 // bygg om så att foursquare använder long och lat utifrån weather app så dom alltid visar samma ställe, klistra in 
-// hela adress infreomrationen i html där det står TABERG nu. 
+// Kanske redirecta changeTitle till att använda sig av weatherApp information.
 
 
 //GET THE RIGHT URL WITH FROM INFO WITH SEARCHBAR WITH BUTTON
 //button event then do function
+
 var submitBtn = document.querySelector("#buttonSearch");
 submitBtn.addEventListener("click", createWeatherUrl);
 submitBtn.addEventListener("click", getUrlFour);
+submitBtn.addEventListener("click", changeTitle);
+submitBtn.addEventListener("click", changeVisibility);
+
+
+let title = document.querySelector("#cityHeader");
+function changeTitle(){
+  let searchBar = document.querySelector("#inputText");
+  let searchRes = searchBar.value;
+  title.innerHTML = searchRes;  
+}
+
 
 let urlWeather = "";
 function createWeatherUrl(){
@@ -36,6 +48,7 @@ let tempDescription = "";
     
     weatherObj = JSON.parse(responseJson);
     temp = weatherObj.main.temp - 272;
+    temp = temp.toFixed(1);
     tempDescription = weatherObj.weather[0].description;
     
     updateWeatherDOM();
@@ -43,9 +56,9 @@ let tempDescription = "";
 
 xhr.onprogress = function(event) {
   if (event.lengthComputable) {
-    alert(`Received ${event.loaded} of ${event.total} bytes`);
+    console.log(`Received ${event.loaded} of ${event.total} bytes`);
   } else {
-    alert(`Received ${event.loaded} bytes`); // no Content-Length
+    console.log(`Received ${event.loaded} bytes`); // no Content-Length
   }
 };
 
@@ -60,7 +73,7 @@ let tempDOM = document.querySelector("#wTemp");
 let tempDescriptionDOM = document.querySelector("#wCondition");
 
 function updateWeatherDOM(){
- tempDOM.innerHTML = temp;
+ tempDOM.innerHTML = temp + "°";
  tempDescriptionDOM.innerHTML = tempDescription;
 }
 
@@ -133,7 +146,7 @@ let imgUrl = "";
     console.log(xhr.response);
     fqImg = JSON.parse(response);
     if(fqImg.meta.code = 429){
-      alert("Cant do more free api pics calls");
+      console.log(xhr.response)
     }else{
       createPicUrl();
     }
@@ -153,18 +166,18 @@ let c1Title = document.querySelector("#c1Title");
  let c1Type = document.querySelector("#c1Type");
  let c1Adress = document.querySelector("#c1Adress");
  let c1Img = document.querySelector("#c1Img");
+
  let c2Title = document.querySelector("#c2Title");
  let c2Type = document.querySelector("#c2Type");
  let c2Adress = document.querySelector("#c2Adress");
  let c2Img = document.querySelector("#c2Img");
+
  let c3Title = document.querySelector("#c3Title");
  let c3Type = document.querySelector("#c3Type");
  let c3Adress = document.querySelector("#c3Adress");
  let c3Img = document.querySelector("#c3Img");
 function updateFourSquareDom(){
  
-
-
  c1Title.innerHTML = answerMain[0].name;
  c2Title.innerHTML = answerMain[1].name;
  c3Title.innerHTML = answerMain[2].name;
@@ -181,5 +194,34 @@ function updateFourSquareDom(){
  c1Img.src = picUrl[0];
  c2Img.src = picUrl[1];
  c3Img.src = picUrl[2];
+
+}
+
+
+//ÄNDRA VISABILITY
+
+let onlyWeather = document.querySelector("#onlyWeather");
+let onlyAtractions = document.querySelector("#onlyAtractions");
+let showAll = document.querySelector("#showAll");
+
+let weatherContent = document.querySelector("#weatherContent");
+let attractionsContent = document.querySelector("#attractionsContent");
+onlyWeather.addEventListener("input", changeVisibility);
+onlyAtractions.addEventListener("input", changeVisibility);
+showAll.addEventListener("input", changeVisibility);
+
+
+function changeVisibility(){
+  if(showAll.checked){
+    weatherContent.classList.remove("hide");
+    attractionsContent.classList.remove("hide");
+  }
+  if(onlyWeather.checked){
+    weatherContent.classList.remove("hide");
+    attractionsContent.classList.add("hide");
+  }else if (onlyAtractions.checked){
+    attractionsContent.classList.remove("hide");
+    weatherContent.classList.add("hide");
+  }
 
 }
