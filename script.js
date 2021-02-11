@@ -33,12 +33,11 @@ let tempDescription = "";
    
    xhr.onload = function() {
     let responseJson = xhr.response;
-    console.log(responseJson)
+    
     weatherObj = JSON.parse(responseJson);
     temp = weatherObj.main.temp - 272;
     tempDescription = weatherObj.weather[0].description;
-    console.log(temp);
-    console.log(tempDescription);
+    
     updateWeatherDOM();
 };
 
@@ -93,7 +92,7 @@ function getFoursQuareInfo(){
  xhrF.open("GET", urlFourSquare);
  xhrF.onload = function(){
   let response = xhrF.response;
-  console.log(response);
+  
   answearF = JSON.parse(xhrF.response);
   answearF.response.groups[0].items[0].venue.name
   for(let i = 0; i < answerMain.length; i++){
@@ -102,6 +101,8 @@ function getFoursQuareInfo(){
    answerMain[i].adress = answearF.response.groups[0].items[i].venue.location.address;
    answerMain[i].venue = answearF.response.groups[0].items[i].venue.id;
   }
+  
+  imgUrlFunc();
   updateFourSquareDom();
  }
  xhrF.send();
@@ -110,29 +111,56 @@ function getFoursQuareInfo(){
 
 //foursquare picture
 let imgUrl = "";
- function ImgUrl(){
-  let url = new URL("https://api.foursquare.com/v2/venues/VENUE_ID/photos");
-  url.searchParams.append("client_id", "3TQDALDDVBD5JLC1UUUWVUGRKOYFY3COM2Z3YMMWGMAX4W2N");
-  url.searchParams.append("client_secret", "4QVH4ZCYPYWHB1BX1LTQLITPT41U5MOEKFDPRVX3IDVB11Z1");
-  url.searchParams.append();
+  function imgUrlFunc(){
+    for(let i = 0; i < answerMain.length; i++){
+        let url = new URL(`https://api.foursquare.com/v2/venues/${answerMain[i].venue}/photos`);
+     url.searchParams.append("client_id", "3TQDALDDVBD5JLC1UUUWVUGRKOYFY3COM2Z3YMMWGMAX4W2N");
+     url.searchParams.append("client_secret", "4QVH4ZCYPYWHB1BX1LTQLITPT41U5MOEKFDPRVX3IDVB11Z1");
+     url.searchParams.append("limit", "2");
+    url.searchParams.append("v", "20210210");
+    imgUrl = url.href;
+    getFourSquareImg();
+    }
+    
  }
 
-
+ let fqImg = {};
  function getFourSquareImg(){
-
+   let xhr = new XMLHttpRequest();
+   xhr.open("GET", imgUrl);
+   xhr.onload = function(){
+    let response = xhr.response;
+    console.log(xhr.response);
+    fqImg = JSON.parse(response);
+    if(fqImg.meta.code = 429){
+      alert("Cant do more free api pics calls");
+    }else{
+      createPicUrl();
+    }
+    
+   }
+   xhr.send();
  }
-
-
+ let picUrl = [];
+ let picUrlCount = 0;
+ function createPicUrl(){
+    picUrl[picUrlCount] = fqImg.response.photos.items[0].prefix + "300x300" + fqImg.response.photos.items[0].suffix;
+    
+    picUrlCount++; 
+ }
 //UPPDATERA INFORMATIONEN VIA DOM foursquare
 let c1Title = document.querySelector("#c1Title");
  let c1Type = document.querySelector("#c1Type");
  let c1Adress = document.querySelector("#c1Adress");
+ let c1Img = document.querySelector("#c1Img");
  let c2Title = document.querySelector("#c2Title");
  let c2Type = document.querySelector("#c2Type");
  let c2Adress = document.querySelector("#c2Adress");
+ let c2Img = document.querySelector("#c2Img");
  let c3Title = document.querySelector("#c3Title");
  let c3Type = document.querySelector("#c3Type");
  let c3Adress = document.querySelector("#c3Adress");
+ let c3Img = document.querySelector("#c3Img");
 function updateFourSquareDom(){
  
 
@@ -149,5 +177,9 @@ function updateFourSquareDom(){
  c1Type.innerHTML = answerMain[0].type;
  c2Type.innerHTML = answerMain[1].type;
  c3Type.innerHTML = answerMain[2].type;
+
+ c1Img.src = picUrl[0];
+ c2Img.src = picUrl[1];
+ c3Img.src = picUrl[2];
 
 }
