@@ -57,7 +57,7 @@ let countryLocation = "";
     let responseJson = xhr.response;
     
     weatherObj = JSON.parse(responseJson);
-    if(weatherObj.cod == "404"){
+    if(weatherObj.cod != "200"){
       changeTitleOnError(weatherObj.message);
     }else{
       attractionsContent.classList.remove("hide");
@@ -82,7 +82,8 @@ xhr.onprogress = function(event) {
 };
 
 xhr.onerror = function() {
-  alert("Request failed");
+  
+  changeTitleOnError("Request failed");
 };
 }
 
@@ -178,10 +179,7 @@ let imgUrl = "";
  let picUrl = [];
  let picUrlCount = 0;
  function createPicUrl(){
-   if(picUrl.length >= 2){
-     delete picUrl[0,1,2];
-     picUrlCount = 0;
-   }
+   
     picUrl[picUrlCount] = fqImg.response.photos.items[0].prefix + "300x300" + fqImg.response.photos.items[0].suffix;
     
     picUrlCount++; 
@@ -216,9 +214,9 @@ function updateFourSquareDom(){
  c2Type.innerHTML = answerMain[1].type;
  c3Type.innerHTML = answerMain[2].type;
 
- //c1Img.src = picUrl[0];
- //c2Img.src = picUrl[1];
- //c3Img.src = picUrl[2];
+ //c1Img.src = picUrl[picUrlCount - 2];
+ //c2Img.src = picUrl[picUrlCount - 1];
+ //c3Img.src = picUrl[picUrlCount];
 
 }
 
