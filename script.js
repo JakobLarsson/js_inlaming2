@@ -48,6 +48,7 @@ let temp = 0;
 let tempDescription = "";
 let nameLocation = "";
 let countryLocation = "";
+let icon = "";
 /*funktion som skapar ett xmlhttprequest objekt för att skicka URL som skapades tidigare. Parametrar som ställs
 in är GET: att jag vill hämta information. Även response type sätts till json*/
   function getWeatherInfo(){
@@ -76,6 +77,7 @@ in är GET: att jag vill hämta information. Även response type sätts till jso
     tempDescription = weatherObj.weather[0].description;
     nameLocation = weatherObj.name;
     countryLocation = weatherObj.sys.country;
+    icon = weatherObj.weather[0].icon;
     changeTitle();
     updateWeatherDOM();
     getUrlFour(weatherObj);
@@ -103,10 +105,12 @@ xhr.onerror = function() {
 
 let tempDOM = document.querySelector("#wTemp");
 let tempDescriptionDOM = document.querySelector("#wCondition");
+let iconDOM = document.querySelector("#wIcon") ;
 
 function updateWeatherDOM(){
  tempDOM.innerHTML = temp + "°";
  tempDescriptionDOM.innerHTML = tempDescription;
+ iconDOM.src = `http://openweathermap.org/img/wn/${icon}@2x.png`;  
 }
 
 
@@ -196,7 +200,9 @@ let imgUrl = "";
  let picUrl = [];
  let picUrlCount = 0;
  function createPicUrl(){
-   
+   if(picUrlCount == 3){
+     picUrlCount == 0;
+   }
     picUrl[picUrlCount] = fqImg.response.photos.items[0].prefix + "300x300" + fqImg.response.photos.items[0].suffix;
     
     picUrlCount++; 
@@ -231,9 +237,9 @@ function updateFourSquareDom(){
  c2Type.innerHTML = answerMain[1].type;
  c3Type.innerHTML = answerMain[2].type;
 
- c1Img.src = picUrl[picUrlCount - 3];
- c2Img.src = picUrl[picUrlCount - 2];
- c3Img.src = picUrl[picUrlCount -1];
+ c1Img.src = picUrl[picUrlCount];
+ c2Img.src = picUrl[picUrlCount];
+ c3Img.src = picUrl[picUrlCount];
 
 }
 
