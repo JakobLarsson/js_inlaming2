@@ -1,6 +1,4 @@
-// bygg om så att foursquare använder long och lat utifrån weather app så dom alltid visar samma ställe, klistra in 
-// Kanske redirecta changeTitle till att använda sig av weatherApp information.
-// Bygg felhantering utifall platsen inte hittas. 
+ 
 
 
 //GET THE RIGHT URL WITH FROM INFO WITH SEARCHBAR WITH BUTTON
