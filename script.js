@@ -1,5 +1,6 @@
 // bygg om så att foursquare använder long och lat utifrån weather app så dom alltid visar samma ställe, klistra in 
 // Kanske redirecta changeTitle till att använda sig av weatherApp information.
+// Bygg felhantering utifall platsen inte hittas. 
 
 
 //GET THE RIGHT URL WITH FROM INFO WITH SEARCHBAR WITH BUTTON
@@ -7,8 +8,8 @@
 
 var submitBtn = document.querySelector("#buttonSearch");
 submitBtn.addEventListener("click", createWeatherUrl);
-submitBtn.addEventListener("click", getUrlFour);
-submitBtn.addEventListener("click", changeTitle);
+
+
 submitBtn.addEventListener("click", changeVisibility);
 
 
@@ -16,7 +17,14 @@ let title = document.querySelector("#cityHeader");
 function changeTitle(){
   let searchBar = document.querySelector("#inputText");
   let searchRes = searchBar.value;
-  title.innerHTML = searchRes;  
+  title.innerHTML = nameLocation + ", " + countryLocation;  
+}
+
+
+function changeTitleOnError(msg){
+  title.innerHTML = msg;
+  attractionsContent.classList.add("hide");
+  weatherContent.classList.add("hide");
 }
 
 
@@ -37,6 +45,8 @@ let searchRes = searchBar.value;
 let weatherObj = {};
 let temp = 0;
 let tempDescription = "";
+let nameLocation = "";
+let countryLocation = "";
   function getWeatherInfo(){
    let xhr = new XMLHttpRequest();
    xhr.open("GET", urlWeather);
@@ -47,11 +57,20 @@ let tempDescription = "";
     let responseJson = xhr.response;
     
     weatherObj = JSON.parse(responseJson);
+    if(weatherObj.cod == "404"){
+      changeTitleOnError(weatherObj.message);
+    }else{
+      attractionsContent.classList.remove("hide");
+  weatherContent.classList.remove("hide");
+    }
     temp = weatherObj.main.temp - 272;
     temp = temp.toFixed(1);
     tempDescription = weatherObj.weather[0].description;
-    
+    nameLocation = weatherObj.name;
+    countryLocation = weatherObj.sys.country;
+    changeTitle();
     updateWeatherDOM();
+    getUrlFour(weatherObj);
 };
 
 xhr.onprogress = function(event) {
@@ -82,16 +101,17 @@ function updateWeatherDOM(){
 let urlFourSquare = "";
 
 
-function getUrlFour(){
+function getUrlFour(obj){
   let searchBar = document.querySelector("#inputText");
 let searchRes = searchBar.value;
  let urlF = new URL("https://api.foursquare.com/v2/venues/explore");
  urlF.searchParams.append("client_id", "3TQDALDDVBD5JLC1UUUWVUGRKOYFY3COM2Z3YMMWGMAX4W2N");
  urlF.searchParams.append("client_secret", "4QVH4ZCYPYWHB1BX1LTQLITPT41U5MOEKFDPRVX3IDVB11Z1");
- urlF.searchParams.append("near", searchRes);
+ urlF.searchParams.append("ll", obj.coord.lat + "," +  obj.coord.lon);
  urlF.searchParams.append("v", "20210210");
  urlF.searchParams.append("limit", "3");
  urlF.searchParams.append("sortByPopularity", "1");
+ urlF.searchParams.append("radius", "3000");
  
  urlFourSquare = urlF.href;
  getFoursQuareInfo();
@@ -115,7 +135,7 @@ function getFoursQuareInfo(){
    answerMain[i].venue = answearF.response.groups[0].items[i].venue.id;
   }
   
-  imgUrlFunc();
+  //imgUrlFunc();
   updateFourSquareDom();
  }
  xhrF.send();
@@ -145,11 +165,12 @@ let imgUrl = "";
     let response = xhr.response;
     console.log(xhr.response);
     fqImg = JSON.parse(response);
-    if(fqImg.meta.code = 429){
+    
       console.log(xhr.response)
-    }else{
+    
       createPicUrl();
-    }
+    
+      
     
    }
    xhr.send();
@@ -157,6 +178,10 @@ let imgUrl = "";
  let picUrl = [];
  let picUrlCount = 0;
  function createPicUrl(){
+   if(picUrl.length >= 2){
+     delete picUrl[0,1,2];
+     picUrlCount = 0;
+   }
     picUrl[picUrlCount] = fqImg.response.photos.items[0].prefix + "300x300" + fqImg.response.photos.items[0].suffix;
     
     picUrlCount++; 
@@ -191,9 +216,9 @@ function updateFourSquareDom(){
  c2Type.innerHTML = answerMain[1].type;
  c3Type.innerHTML = answerMain[2].type;
 
- c1Img.src = picUrl[0];
- c2Img.src = picUrl[1];
- c3Img.src = picUrl[2];
+ //c1Img.src = picUrl[0];
+ //c2Img.src = picUrl[1];
+ //c3Img.src = picUrl[2];
 
 }
 
